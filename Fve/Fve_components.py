@@ -8,13 +8,23 @@ class Inverter:
         self.power = power
         self.price = price
 
+    def getPrice(self)->float:
+        return self.price
+
 
 # třída pro PV panel
-class PVModul:
-    def __init__(self, name: str, power: float, price: float) -> None:
+class PVModuls:
+    def __init__(self, name: str, power: float, price: float, count:int) -> None:
         self.name = name
         self.power = power
         self.price = price
+        self.count=count
+
+    def getPrice(self)->float:
+        return self.price
+
+    def getPower(self):
+        return self.power*self.count
 
 # třída pro  střešní konstrukci panel
 class Construction:
@@ -22,6 +32,9 @@ class Construction:
         self.name = name
         self.power = power
         self.price = price
+
+    def getPrice(self)->float:
+        return self.price
 
 
 # třída pro baterie panel
@@ -31,10 +44,15 @@ class Battery:
         self.power = power
         self.price = price
 
+    def getPrice(self)->float:
+        return self.price
+
 
 # třída pro sestavení bateriového uložiště
 class BatteryPack:
     def __init__(self, battery:Battery,pieces:int)->None:
         self.battery=battery
         self.pieces=pieces
-        self.price=pieces*battery.price
+
+    def getPrice(self)->float:
+        return self.battery.getPrice()*self.pieces
