@@ -21,7 +21,7 @@ class PVModuls:
         self.count=count
 
     def getPrice(self)->float:
-        return self.price
+        return self.price*self.count
 
     def getPower(self):
         return self.power*self.count
