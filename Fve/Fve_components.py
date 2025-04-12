@@ -28,9 +28,8 @@ class PVModuls:
 
 # třída pro  střešní konstrukci panel
 class Construction:
-    def __init__(self, name: str, power: float, price: float) -> None:
+    def __init__(self, name: str, price: float) -> None:
         self.name = name
-        self.power = power
         self.price = price
 
     def getPrice(self)->float:
