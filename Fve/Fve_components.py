@@ -87,5 +87,6 @@ class BatteryPack:
 
         self.pieces -=pieces
 
+# metoda pro zjištění celkové ceny uložiště
     def get_price(self)->float:
         return self.battery.get_price()*self.pieces
