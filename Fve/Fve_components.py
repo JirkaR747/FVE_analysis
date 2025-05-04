@@ -57,14 +57,14 @@ class BatteryPack:
     # nastavení validace proměné pieces
     @property
     def pieces(self) -> int:
-        return self._pieces
+        return self.__pieces
 
     # nastavení setteru pro pieces
     @pieces.setter
     def pieces(self, pieces: int) -> None:
         if pieces < 0:
             raise ValueError("Počet baterií nemůže být záporný")
-        self._pieces = pieces
+        self.__pieces = pieces
 
     # metoda pro přidání baterie do uložiště
     def add_battery(self, pieces: int) -> None:
