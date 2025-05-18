@@ -5,6 +5,7 @@ from Fve.Fve_components import Inverter, PVModuls, Construction, Battery, Batter
 from Fve.FVE import FVE
 from tariff import Tariff
 
+
 class ProjectSaver:
     """
     Singleton pro ukládání a načítání seznamu FVE sestav a tarifů do/z JSON souboru.
@@ -25,7 +26,7 @@ class ProjectSaver:
                     "inverter": vars(fve.inverter),
                     "battery": {
                         "name": fve.battery_pack.battery.name,
-                        "power": fve.battery_pack.battery.power,
+                        "capacity": fve.battery_pack.battery.capacity,
                         "price": fve.battery_pack.battery.price
                     },
                     "battery_count": fve.battery_pack.pieces,
@@ -38,7 +39,8 @@ class ProjectSaver:
                 {
                     "name": t.name,
                     "supplier": t.supplier,
-                    "valid_from": t.valid_from,
+                    "valid_from": t.valid_from.strftime("%Y-%m-%d") if t.valid_from else None,
+                    "valid_to": t.valid_to.strftime("%Y-%m-%d") if getattr(t, "valid_to", None) else None,
                     "items": [
                         {"name": it.name, "value": it.value, "unit": it.unit, "vat": it.vat}
                         for it in t.items
@@ -46,6 +48,7 @@ class ProjectSaver:
                 }
                 for t in tariffs
             ]
+
         }
         with open(self.filepath, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
