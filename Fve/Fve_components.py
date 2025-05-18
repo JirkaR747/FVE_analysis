@@ -18,7 +18,7 @@ class Inverter:
         return self.price
 
 # Třída fotovoltaických panelů představuje skupinu panelů
-class PVModules:
+class PVModuls:
     # Inicializace s názvem, výkonem jednoho panelu (W), cenou jednoho (Kč) a počtem kusů
     def __init__(self, name: str, power: float, unit_price: float, count: int) -> None:
         if power < 0 or unit_price < 0 or count < 0:

@@ -2,7 +2,7 @@
 # Agreguje komponenty do jednoho celku s výpočtem ceny a výkonu
 
 from typing import Optional
-from Fve_components import Inverter, PVModules, Construction, BatteryPack
+from Fve_components import Inverter, PVModuls, Construction, BatteryPack
 
 # Třída reprezentující kompletní FVE sestavu
 class FVE:
@@ -12,7 +12,7 @@ class FVE:
         name: str,
         inverter: Optional[Inverter] = None,
         battery_pack: Optional[BatteryPack] = None,
-        pv_modules: Optional[PVModules] = None,
+        pv_modules: Optional[PVModuls] = None,
         construction: Optional[Construction] = None
     ) -> None:
         self.name = name
@@ -26,7 +26,7 @@ class FVE:
         self.inverter = inverter
 
     # Nastaví nebo změní PV panely
-    def set_pv_modules(self, pv_modules: PVModules) -> None:
+    def set_pv_modules(self, pv_modules: PVModuls) -> None:
         self.pv_modules = pv_modules
 
     # Nastaví nebo změní konstrukci
