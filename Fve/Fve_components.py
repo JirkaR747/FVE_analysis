@@ -1,89 +1,91 @@
-# třídy pro jednotlivé komponenty na sestavení FVE
+# Modul pro komponenty fotovoltaické elektrárny (FVE)
+# Obsahuje třídy pro střídač, panely, konstrukci a baterie
 
+from typing import Optional
 
-# třída pro střídač
+# Třída střídače převádí stejnosměrný proud na střídavý
 class Inverter:
+    # Inicializace střídače s názvem, výkonem (kW) a cenou (Kč)
     def __init__(self, name: str, power: float, price: float) -> None:
+        if power < 0 or price < 0:
+            raise ValueError("Výkon i cena střídače musí být nezáporné")
         self.name = name
         self.power = power
         self.price = price
 
+    # Vrátí cenu střídače
     def get_price(self) -> float:
         return self.price
 
-
-# třída pro PV panel
-class PVModuls:
-    def __init__(self, name: str, power: float, price: float, count: int) -> None:
+# Třída fotovoltaických panelů představuje skupinu panelů
+class PVModules:
+    # Inicializace s názvem, výkonem jednoho panelu (W), cenou jednoho (Kč) a počtem kusů
+    def __init__(self, name: str, power: float, unit_price: float, count: int) -> None:
+        if power < 0 or unit_price < 0 or count < 0:
+            raise ValueError("Výkon, cena ani počet panelů nesmí být záporné")
         self.name = name
         self.power = power
-        self.price = price
+        self.unit_price = unit_price
         self.count = count
 
+    # Vypočítá a vrátí celkovou cenu všech panelů
     def get_price(self) -> float:
-        return self.price * self.count
+        return self.unit_price * self.count
 
-    def get_power(self):
+    # Vypočítá a vrátí celkový výkon všech panelů (W)
+    def get_power(self) -> float:
         return self.power * self.count
 
-
-# třída pro  střešní konstrukci panel
+# Třída konstrukce pro uchycení panelů na střeše či jiném povrchu
 class Construction:
+    # Inicializace s názvem konstrukce a její cenou (Kč)
     def __init__(self, name: str, price: float) -> None:
+        if price < 0:
+            raise ValueError("Cena konstrukce nesmí být záporná")
         self.name = name
         self.price = price
 
+    # Vrátí cenu konstrukce
     def get_price(self) -> float:
         return self.price
 
-
-# třída pro baterie
+# Třída jedné baterie s kapacitou a cenou
 class Battery:
-    def __init__(self, name: str, power: float, price: float) -> None:
+    # Inicializace s názvem, kapacitou (kWh) a cenou (Kč)
+    def __init__(self, name: str, capacity: float, price: float) -> None:
+        if capacity < 0 or price < 0:
+            raise ValueError("Kapacita i cena baterie musí být nezáporné")
         self.name = name
-        self.power = power
+        self.capacity = capacity
         self.price = price
 
+    # Vrátí cenu baterie
     def get_price(self) -> float:
         return self.price
 
-
-# třída pro sestavení bateriového uložiště
+# Třída bateriového úložiště složeného z více baterií
 class BatteryPack:
+    # Inicializace s instancí Battery a počtem kusů
     def __init__(self, battery: Battery, pieces: int) -> None:
+        if pieces < 0:
+            raise ValueError("Počet baterií nesmí být záporný")
         self.battery = battery
         self.pieces = pieces
 
-    # nastavení validace proměné pieces
-    @property
-    def pieces(self) -> int:
-        return self.__pieces
+    # Přidá baterie do úložiště, kontrola kladného počtu
+    def add_batteries(self, count: int) -> None:
+        if count < 0:
+            raise ValueError("Počet přidávaných baterií musí být kladný")
+        self.pieces += count
 
-    # nastavení setteru pro pieces
-    @pieces.setter
-    def pieces(self, pieces: int) -> None:
-        if pieces < 0:
-            raise ValueError("Počet baterií nemůže být záporný")
-        self.__pieces = pieces
+    # Odebere baterie z úložiště, kontrola rozsahu
+    def remove_batteries(self, count: int) -> None:
+        if count < 0:
+            raise ValueError("Počet odebíraných baterií musí být kladný")
+        if count > self.pieces:
+            raise ValueError(f"Není dostatek baterií k odebrání (max {self.pieces})")
+        self.pieces -= count
 
-    # metoda pro přidání baterie do uložiště
-    def add_battery(self, pieces: int) -> None:
-
-        if pieces < 0:
-            raise ValueError("Pro přidání baterie musíš zadat kladné číslo")
-        self.pieces += pieces
-
-    # metoda pro odebrání baterií z uložiště
-    def remove_battery(self, pieces: int) -> None:
-
-        if pieces < 0:
-            raise ValueError("Pro odebrání baterie musíš zadat kladné číslo")
-
-        if pieces > self.pieces:
-            raise ValueError(f"Nelze odebrat {pieces} ks , k dispozici je pouze {self.pieces} ks")
-
-        self.pieces -= pieces
-
-    # metoda pro zjištění celkové ceny uložiště
+    # Vrátí celkovou cenu všech baterií v úložišti
     def get_price(self) -> float:
         return self.battery.get_price() * self.pieces
